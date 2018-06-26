@@ -64,9 +64,9 @@ def get_config():
     args = parser.parse_args()
 
     default_config = {
-        'dev': '/dev/serial/by-id/usb-Adafruit_Adafruit_Mini_Metro_328_ADAOFIOls-if00-port0',
+        'dev': '/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0',
         'baudrate': 115200,
-        'apikey': None,
+        'apikey': '0190C79490414B26BFD70044A4C5D616',
         'octoprinthost': '127.0.0.1',
         'csvlog': None,
         'alarmchangethreshold': 0.1,
@@ -74,7 +74,7 @@ def get_config():
         'alarmaction': 'cancel',
         'encoderscalingfactor': 0.040,
         'windowduration': 120,
-        'httpport': None,
+        'httpport': 8081,
     }
 
     # Load config from file, or use defaults
@@ -179,6 +179,7 @@ def main(): # pylint: disable=too-many-locals
             if pos != None:
                 meas_change_norm = meas_change_raw * config['encoderscalingfactor']
                 logger.debug('New position is %d (%+.1f)', pos, meas_change_norm)
+                # octoprint.print_status()
                 stat = octoprint.status()
 
                 logger.debug('OctoPrint status: printing=%d "%s" "%s" %.1f/%.1f %.1f/%.1f',

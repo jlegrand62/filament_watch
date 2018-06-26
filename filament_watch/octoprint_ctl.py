@@ -120,10 +120,13 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
         friendly_temp_names = {'bed': 'Bed', 'tool0': 'Hotend'}
 
         for dev in ['bed', 'tool0']:
-            temp_actual = float(printer_json['temperature'][dev]['actual'])
-            if printer_json['temperature'][dev]['target']:
+            try:
+                temp_actual = float(printer_json['temperature'][dev]['actual'])
+            except KeyError:
+                temp_actual = 0.0
+            try:
                 temp_target = float(printer_json['temperature'][dev]['target'])
-            else:
+            except KeyError:
                 temp_target = 0.0
 
             if (temp_target - temp_actual) > temp_threshold and temp_target > 0:
@@ -153,13 +156,44 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
                         job_json['job']['file']['name'],
                         float(job_json['progress']['completion']))
         if state == 'Operational':
-            bed_actual = float(printer_json['temperature']['bed']['actual'])
-            if bed_actual > 30.0:
+            try:
+                bed_actual = float(printer_json['temperature']['bed']['actual'])
+            except KeyError:
+                bed_actual = None
+            if bed_actual is None:
+                # return 'No HeatBed'
+                pass
+            elif bed_actual > 30.0:
                 return 'Bed Cooling'
-
+            else:
+                pass
             return 'Idle'
 
         return state
+
+    def print_status(self):
+        print "Request send to:",
+        print 'http://%s/api/printer?apikey=%s' % (self.hostname, self.api_key)
+        stat = {}
+        printer_json = None
+        try:
+            printer_req = requests.get('http://%s/api/printer?apikey=%s' % (self.hostname, self.api_key))
+            printer_req_text = printer_req.text
+            if printer_req.status_code == 200:
+                printer_json = printer_req.json()
+            else:
+                self.logger.debug('Status code %d querying /api/printer', printer_req.status_code)
+                printer_json = False
+        except requests.exceptions.ConnectionError:
+            stat['summary'] = 'OctoPrint down'
+            print stat
+        except ValueError:
+            print('ValueError processing printer status')
+            stat['summary'] = 'ValueError processing printer status'
+            print stat
+
+        print printer_json
+        return
 
     def status(self):
         """Extract various status parameters from OctoPrint"""
@@ -218,10 +252,13 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
                 stat['printing'] = True
 
             if printer_json:
-                stat['bed_actual'] = float(printer_json['temperature']['bed']['actual'])
-                if printer_json['temperature']['bed']['target']:
+                try:
+                    stat['bed_actual'] = float(printer_json['temperature']['bed']['actual'])
+                except KeyError:
+                    stat['bed_actual'] = 0
+                try:
                     stat['bed_target'] = float(printer_json['temperature']['bed']['target'])
-                else:
+                except KeyError:
                     stat['bed_target'] = 0
                 stat['tool0_actual'] = float(printer_json['temperature']['tool0']['actual'])
                 if printer_json['temperature']['tool0']['target']:
