@@ -167,9 +167,14 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
                         float(job_json['progress']['completion']))
         if state == 'Operational':
             try:
-                bed_actual = float(printer_json['temperature']['bed']['actual'])
+                bed_actual = printer_json['temperature']['bed']['actual']
+                assert bed_actual is not None
             except KeyError:
                 bed_actual = None
+            except AssertionError:
+                bed_actual = None
+            else:
+                bed_actual = float(bed_actual)
             if bed_actual is None:
                 # return 'No HeatBed'
                 pass
