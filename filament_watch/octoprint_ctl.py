@@ -121,13 +121,14 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
 
         for dev in ['bed', 'tool0']:
             try:
-                print printer_json['temperature'][dev]['actual']
                 temp_actual = float(printer_json['temperature'][dev]['actual'])
-            except KeyError or TypeError:
+                assert temp_actual is not None
+            except KeyError or AssertionError:
                 temp_actual = 0.0
             try:
                 temp_target = float(printer_json['temperature'][dev]['target'])
-            except KeyError or TypeError:
+                assert temp_target is not None
+            except KeyError or AssertionError:
                 temp_target = 0.0
 
             if (temp_target - temp_actual) > temp_threshold and temp_target > 0:
@@ -159,7 +160,7 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
         if state == 'Operational':
             try:
                 bed_actual = float(printer_json['temperature']['bed']['actual'])
-            except KeyError or TypeError:
+            except KeyError:
                 bed_actual = None
             if bed_actual is None:
                 # return 'No HeatBed'
