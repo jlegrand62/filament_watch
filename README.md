@@ -13,7 +13,11 @@ bash pi_setup.sh
 ```
 
 ## Usage:
-Add the following lines to `/etc/rc.local` before `exit 0`:
+Using the `nano` editor as sudo:
+```bash
+sudo nano /etc/rc.local
+```
+add the following lines to `/etc/rc.local` before `exit 0`:
 ```bash
 ## Start filament_watch:
 bash /home/pi/filament_watch/run_filament_watch.sh &
@@ -29,7 +33,7 @@ http://HOSTNAME/api/printer?apikey=APIKEY
 ```
 with the right `HOSTNAME` (ip) & `APIKEY` of course.
 
-Or enable the added (uggly) status report by uncommenting line 182 in `filament_watch.py`:
+Or enable the added (ugly) status report by uncommenting line 182 in `filament_watch.py`:
 ```python
 octoprint.print_status()
 ```
