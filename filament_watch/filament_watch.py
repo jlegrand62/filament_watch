@@ -66,7 +66,7 @@ def get_config():
     default_config = {
         'dev': '/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0',
         'baudrate': 115200,
-        'apikey': 'BAA0504CEE3D4E07A98BBF56DF02BCA1',
+        'apikey': '',
         'octoprinthost': '127.0.0.1',
         'csvlog': None,
         'alarmchangethreshold': 0.1,
