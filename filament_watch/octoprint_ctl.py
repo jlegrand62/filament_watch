@@ -122,11 +122,11 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
         for dev in ['bed', 'tool0']:
             try:
                 temp_actual = float(printer_json['temperature'][dev]['actual'])
-            except KeyError:
+            except KeyError or TypeError:
                 temp_actual = 0.0
             try:
                 temp_target = float(printer_json['temperature'][dev]['target'])
-            except KeyError:
+            except KeyError or TypeError:
                 temp_target = 0.0
 
             if (temp_target - temp_actual) > temp_threshold and temp_target > 0:
@@ -158,7 +158,7 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
         if state == 'Operational':
             try:
                 bed_actual = float(printer_json['temperature']['bed']['actual'])
-            except KeyError:
+            except KeyError or TypeError:
                 bed_actual = None
             if bed_actual is None:
                 # return 'No HeatBed'
@@ -254,17 +254,17 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
             if printer_json:
                 try:
                     stat['bed_actual'] = float(printer_json['temperature']['bed']['actual'])
-                except KeyError:
-                    stat['bed_actual'] = 0
+                except KeyError or TypeError:
+                    stat['bed_actual'] = 0.
                 try:
                     stat['bed_target'] = float(printer_json['temperature']['bed']['target'])
-                except KeyError:
-                    stat['bed_target'] = 0
+                except KeyError or TypeError:
+                    stat['bed_target'] = 0.
                 stat['tool0_actual'] = float(printer_json['temperature']['tool0']['actual'])
                 if printer_json['temperature']['tool0']['target']:
                     stat['tool0_target'] = float(printer_json['temperature']['tool0']['target'])
                 else:
-                    stat['tool0_target'] = 0
+                    stat['tool0_target'] = 0.
                     stat['printing'] = False
                 stat['state'] = job_json['state']
                 if stat['state'] != 'Printing':
