@@ -123,14 +123,18 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
             try:
                 temp_actual = printer_json['temperature'][dev]['actual']
                 assert temp_actual is not None
-            except KeyError or AssertionError:
+            except KeyError:
+                temp_actual = 0.0
+            except AssertionError:
                 temp_actual = 0.0
             else:
                 temp_actual = float(temp_actual)
             try:
                 temp_target = printer_json['temperature'][dev]['target']
                 assert temp_target is not None
-            except KeyError or AssertionError:
+            except KeyError:
+                temp_target = 0.0
+            except AssertionError:
                 temp_target = 0.0
             else:
                 temp_target = float(temp_target)
