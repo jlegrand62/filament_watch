@@ -8,6 +8,7 @@ virtualenv filament_watch_env
 # - Make sure the venv is loaded:
 if [[ -n VIRTUAL_ENV ]]; then
     exit 1
+fi
 
 # - Install filament_watch:
 python setup.py install
