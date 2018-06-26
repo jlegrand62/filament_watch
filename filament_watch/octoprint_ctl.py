@@ -269,11 +269,11 @@ class OctoPrintAccess(object): # pylint: disable=too-many-instance-attributes
             if printer_json:
                 try:
                     stat['bed_actual'] = float(printer_json['temperature']['bed']['actual'])
-                except KeyError or TypeError:
+                except:
                     stat['bed_actual'] = 0.
                 try:
                     stat['bed_target'] = float(printer_json['temperature']['bed']['target'])
-                except KeyError or TypeError:
+                except:
                     stat['bed_target'] = 0.
                 stat['tool0_actual'] = float(printer_json['temperature']['tool0']['actual'])
                 if printer_json['temperature']['tool0']['target']:
