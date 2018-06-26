@@ -3,7 +3,7 @@
 virtualenv filament_watch_env
 
 # - Load it:
-. ~/filament_watch_env/bin/activate
+. ~/filament_watch/filament_watch_env/bin/activate
 
 # - Make sure the venv is loaded:
 if [[ -n VIRTUAL_ENV ]]; then

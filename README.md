@@ -16,7 +16,7 @@ sh pi_setup.sh
 Add the following lines to `/etc/rc.local` before `exit 0`:
 ```bash
 ## Start filament_watch:
-sh /home/pi/run_filament_watch.sh &
+sh /home/pi/filament_watch/run_filament_watch.sh &
 ```
 This will start filament_watch as root at boot.
 
