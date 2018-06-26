@@ -6,7 +6,7 @@ virtualenv filament_watch_env
 . ~/filament_watch/filament_watch_env/bin/activate
 
 # - Make sure the venv is loaded:
-if [[ -n VIRTUAL_ENV ]]; then
+if [[ -n $VIRTUAL_ENV ]]; then
     exit 1
 fi
 
