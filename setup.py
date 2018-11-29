@@ -30,7 +30,7 @@ setup(
     install_requires=[
         'requests',
         'pyserial',
-        'cherrypy>=3.1,cherrypy<18.0.0',
+        'cherrypy>=3.1,<18.0.0',
         'pyyaml'
     ]
 )
